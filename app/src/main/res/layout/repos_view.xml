@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="70sp"
+        card_view:cardUseCompatPadding="true"
+        card_view:cardCornerRadius="4dp">
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+        <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/repo_name"
+                android:layout_marginStart="16dp"
+                android:gravity="center_vertical"
+                android:layout_weight="1" android:textColor="@android:color/black"/>
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_weight="1">
+
+            <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:id="@+id/starcount" android:textColor="@android:color/black"
+                    android:gravity="bottom|center_horizontal" android:textSize="18sp"/>
+            <TextView
+                    android:text="stars"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:id="@+id/stars" android:textColor="@android:color/black"
+                    android:gravity="center_horizontal|top"/>
+        </LinearLayout>
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_weight="1">
+            <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:id="@+id/watchcount" android:textColor="@android:color/black"
+                    android:gravity="bottom|center_horizontal" android:textSize="18sp"/>
+            <TextView
+                    android:text="watchers"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:id="@+id/watchers" android:textColor="@android:color/black"
+                    android:gravity="center_horizontal|top"/>
+        </LinearLayout>
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_weight="1">
+            <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:id="@+id/forkcount" android:textColor="@android:color/black"
+                    android:gravity="bottom|center_horizontal" android:textSize="18sp"/>
+            <TextView
+                    android:text="forks"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:id="@+id/forks" android:textColor="@android:color/black"
+                    android:gravity="center_horizontal|top"/>
+        </LinearLayout>
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

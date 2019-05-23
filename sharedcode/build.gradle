@@ -1,0 +1,85 @@
+apply plugin: 'kotlin-multiplatform'
+apply plugin: 'kotlinx-serialization'
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 28
+    defaultConfig {
+        minSdkVersion 19
+        targetSdkVersion 28
+        versionCode 1
+        versionName '1.0'
+        testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+        }
+    }
+}
+
+kotlin {
+    targets {
+        final def iOSTarget = System.getenv('SDK_NAME')?.startsWith("iphoneos") \
+                              ? presets.iosArm64 : presets.iosX64
+
+        fromPreset(iOSTarget, 'iOS') {
+            binaries {
+                framework('sharedcode')
+            }
+        }
+
+        fromPreset(presets.android, 'android')
+    }
+
+    sourceSets {
+        commonMain.dependencies {
+            api 'org.jetbrains.kotlin:kotlin-stdlib-common'
+            implementation "io.ktor:ktor-client-core:$ktor_version"
+            implementation "io.ktor:ktor-client:$ktor_version"
+            implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core-common:$coroutine_version"
+            implementation "org.jetbrains.kotlinx:kotlinx-serialization-runtime-common:$serializer_version"
+            implementation "org.jetbrains.kotlin:kotlin-serialization:$kotlin_version"
+        }
+
+        androidMain.dependencies {
+            api 'org.jetbrains.kotlin:kotlin-stdlib'
+            implementation "io.ktor:ktor-client-android:$ktor_version"
+            implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutine_version"
+            implementation "org.jetbrains.kotlinx:kotlinx-serialization-runtime:$serializer_version"
+        }
+
+        iOSMain.dependencies {
+            implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+            implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core-native:$coroutine_version"
+            implementation "org.jetbrains.kotlinx:kotlinx-serialization-runtime-native:$serializer_version"
+            implementation "io.ktor:ktor-client-ios:$ktor_version"
+        }
+    }
+}
+
+
+// workaround for https://youtrack.jetbrains.com/issue/KT-27170
+configurations {
+    compileClasspath
+}
+
+task packForXCode(type: Sync) {
+    final File frameworkDir = new File(buildDir, "xcode-frameworks")
+    final String mode = project.findProperty("XCODE_CONFIGURATION")?.toUpperCase() ?: 'DEBUG'
+    final def framework = kotlin.targets.iOS.binaries.getFramework("sharedcode", mode)
+
+    inputs.property "mode", mode
+    dependsOn framework.linkTask
+
+    from { framework.outputFile.parentFile }
+    into frameworkDir
+
+    doLast {
+        new File(frameworkDir, 'gradlew').with {
+            text = "#!/bin/bash\nexport 'JAVA_HOME=${System.getProperty("java.home")}'\ncd '${rootProject.rootDir}'\n./gradlew \$@\n"
+            setExecutable(true)
+        }
+    }
+}
+tasks.build.dependsOn packForXCode

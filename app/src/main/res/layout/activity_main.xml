@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:screenOrientation="portrait"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:context=".MainActivity">
+
+    <FrameLayout android:layout_width="0dp"
+                 android:id="@+id/search_bar_view"
+                 android:layout_height="wrap_content"
+                 app:layout_behavior=".ui.SearchBarBehavior" app:layout_constraintTop_toTopOf="parent"
+                 app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent">
+
+            <androidx.appcompat.widget.SearchView
+                    android:id="@+id/searchUserBox"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_width="fill_parent"
+                    android:hint="Search for GitHub user"
+                    android:maxLines="1"
+                    android:inputType="text">
+
+            </androidx.appcompat.widget.SearchView>
+    </FrameLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/users"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="8dp"
+            android:scrollbars="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/search_bar_view"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
